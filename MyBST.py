@@ -65,23 +65,21 @@ class BinarySearchTree:
 	def tree_find(self, key: int):
 		"""Traditional binary searching for a value, if the node is smaller than the left side, we go left
 		if the node is bigger than the right, we go right. eventually, we hit the end"""
-#		print("Looking for: {}".format(key))
-		current = self.root
-		self.listcomparisons += 1
-		if current.key == key:
+		current = self.root  # type: TreeNode
+		self.listcomparisons += 1  # type: int
+		if current.key == key:  # if the root is the key we're searching for, return the node
 			return current
-		while current is not None:
-#			print("Leaves are: Left: {} Right: {} ".format(current.left, current.right))
-			self.listcomparisons += 1
-			if current.key == key:
+		while current is not None:  # start the iteration over the tree
+			self.listcomparisons += 1  # type: int
+			if current.key == key:  # is current node the one we're looking for?
 				return current
-			self.listcomparisons += 1
-			if current.has_left() and (current.left.key >= key):
-				current = current.left
-			elif current.has_right():
-				current = current.right
+			self.listcomparisons += 1  # type: int
+			if current.has_left() and (current.left.key >= key):  # if our tree both has a left child and the value is greater than or eq key
+				current = current.left #set the current equal to the left branch
+			elif current.has_right():  # if the current has a right branch and left isn't smaller or eq
+				current = current.right  # set current to the right branch
 			else:
-				raise KeyError("Key not found")
+				raise KeyError("Key not found")  # no possible move, raise error telling our try catch to jump out
 			
 		
 
@@ -255,6 +253,7 @@ if __name__ == "__main__":
 		search"""
 		for num in f:
 			num = int(num.strip())
+			"""try and except block for the linked list search"""
 			try:
 				B.find(int(num))
 				temp = B.get_comparisons()
@@ -262,6 +261,7 @@ if __name__ == "__main__":
 			except KeyError:
 				temp = B.get_comparisons()
 				unsuccessfulComparisons.append(temp)
+			"""try and except block for the regular binary search"""
 			try:
 				B.tree_find(num)
 				treeRight.append(B.listcomparisons)
