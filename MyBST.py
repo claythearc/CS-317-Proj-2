@@ -166,7 +166,7 @@ def heapify(arr : MagicList, n : int, i : int):
 
 
 # The main function to sort an array of given size
-def heapSort(arr : list):
+def heapSort(arr : MagicList):
 	"""Driver function for heapsort. """
 	n = len(arr)
 
