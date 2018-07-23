@@ -2,10 +2,8 @@
 # CS 317
 # Project #2
 # Python 3.5.2
-
 import typing
 import builtins
-
 
 
 class TreeNode:
@@ -100,6 +98,8 @@ class BinarySearchTree:
         for node in self:
             if node.key == key:
                 return node
+            else:
+                self.comparisons += 1
 
     def delete2(self, key: int):
         """deletes a node in the tree, by iterating over the tree
@@ -112,6 +112,11 @@ class BinarySearchTree:
         self.root = None
         for item in nodelist:
             self.insert(item)
+
+    def get_comparisons(self):
+        temp = self.comparisons
+        self.comparisons = 0
+        return temp
 
 
 if __name__ == "__main__":
@@ -126,3 +131,7 @@ if __name__ == "__main__":
     print(B)
     B.delete2(rlist[0])
     print(B)
+    randomz = random.choice(rlist)
+    B.find(randomz)
+    print("Comparisons: {}".format(B.get_comparisons()))
+    print("Comparisons: {}".format(B.get_comparisons()))
