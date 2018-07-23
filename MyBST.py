@@ -158,7 +158,7 @@ def heapify(arr : MagicList, n : int, i : int):
 		largest = r
 
 	# Change root, if needed
-	if largest != i:
+	if not_eq(largest, i):
 		arr[i], arr[largest] = arr[largest], arr[i]  # swap
 
 		# Heapify the root.
@@ -187,6 +187,10 @@ def count(func : 'function'):
 		return func(*args)
 	inner.counter = 0
 	return inner
+
+@count
+def not_eq(op1: int, op2: int):
+	return op1 != op2
 
 @count
 def less_than(op1: int, op2: int):
@@ -249,12 +253,14 @@ if __name__ == "__main__":
 			num = num.strip()
 			heaplist.append(num)
 
-		heaplist = MagicList(heaplist)  # type: MagicList convert the list to a MagicList for my exchange counter
-		heapSort(heaplist)
-		n = len(heaplist)
-		print("\n*******************Heap Sort***************************")
-		print("Number of comparisons for n * log2(n): {} and n^2: {}".format(n * math.log(n, 2), n**2))
-		print("Comparisons for my implementation: {}".format(less_than.counter + greater_than.counter))
-		print("Exchanges for my implementation: {}".format(heaplist.exchanges))
+	"""convert my list of numbers to a MagicList"""
+	heaplist = MagicList(heaplist)  # type: MagicList convert the list to a MagicList for my exchange counter
+	heapSort(heaplist)  # call the heapsort function
+	n = len(heaplist)  # get the length of the list
+	"""print all the required output"""
+	print("\n*******************Heap Sort***************************")
+	print("Number of comparisons for n * log2(n): {} and n^2: {}".format(n * math.log(n, 2), n**2))
+	print("Comparisons for my implementation: {}".format(less_than.counter + greater_than.counter + not_eq.counter))
+	print("Exchanges for my implementation: {}".format(heaplist.exchanges))
 
 
