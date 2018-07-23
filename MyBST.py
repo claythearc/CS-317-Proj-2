@@ -60,6 +60,30 @@ class BinarySearchTree:
 		self.root = None  # type: TreeNode
 		self.size = 0  # type: int
 		self.comparisons = 0  # type: int
+		self.listcomparisons = 0  # type: int
+		
+	def tree_find(self, key: int):
+		"""Traditional binary searching for a value, if the node is smaller than the left side, we go left
+		if the node is bigger than the right, we go right. eventually, we hit the end"""
+#		print("Looking for: {}".format(key))
+		current = self.root
+		self.listcomparisons += 1
+		if current.key == key:
+			return current
+		while current is not None:
+#			print("Leaves are: Left: {} Right: {} ".format(current.left, current.right))
+			self.listcomparisons += 1
+			if current.key == key:
+				return current
+			self.listcomparisons += 1
+			if current.has_left() and (current.left.key >= key):
+				current = current.left
+			elif current.has_right():
+				current = current.right
+			else:
+				raise KeyError("Key not found")
+			
+		
 
 	def __iter__(self):
 		"""the __iter__ function overrides the method for sprawling through the tree, such as for x in tree"""
@@ -208,6 +232,10 @@ if __name__ == "__main__":
 	successfulComparisons = []  # type: list counter for successful comparisons
 	unsuccessfulComparisons = []  # type: list counter for unsuccessful comparisons
 	total = 0 #total number of comparisons made
+	
+	treeRight = []
+	treeWrong = []
+	treeTotal = []
 	with open("alternating_order.txt") as f:
 		"""read the file, append the items into templist, strip them and turn them into ints for easier processing"""
 		for num in f:
@@ -226,24 +254,35 @@ if __name__ == "__main__":
 		distinguish if the value is being found or not, so the Exception block is run in the event of an unsuccessful 
 		search"""
 		for num in f:
+			num = int(num.strip())
 			try:
-				num = num.strip()
 				B.find(int(num))
 				temp = B.get_comparisons()
 				successfulComparisons.append(temp)
 			except KeyError:
 				temp = B.get_comparisons()
 				unsuccessfulComparisons.append(temp)
+			try:
+				B.tree_find(num)
+				treeRight.append(B.listcomparisons)
+				B.listcomparisons = 0
+			except KeyError:
+				treeWrong.append(B.listcomparisons)
+				B.listcomparisons = 0
+			
 
 	"""print the values of total comparisons, called through the builtin sum() function which will iterate over an
 	iterable, such as a list, and add all the values together.
 	The statistics.mean() function is also built in and just returns the mean of the data."""
-	print("Binary Search Tree:")
+	print("BST w/ Linked List:")
 	print("Total Comparisons: {}".format(sum(unsuccessfulComparisons + successfulComparisons)))
 	print("Average successful: {}".format(statistics.mean(successfulComparisons)))
 	print("Average Unsuccessful: {}".format(statistics.mean(unsuccessfulComparisons)))
 
-
+	print("Binary Search Tree:")
+	print("Total Comparisons: {}".format(sum(treeWrong + treeRight)))
+	print("Average Successful: {}".format(statistics.mean(treeRight)))
+	print("Average Unsuccessful: {}".format(statistics.mean(treeWrong)))
 
 	"""building the HeapSort magic now"""
 	heaplist = []  # type: list holds the list for heaping
@@ -262,5 +301,9 @@ if __name__ == "__main__":
 	print("Number of comparisons for n * log2(n): {} and n^2: {}".format(n * math.log(n, 2), n**2))
 	print("Comparisons for my implementation: {}".format(less_than.counter + greater_than.counter + not_eq.counter))
 	print("Exchanges for my implementation: {}".format(heaplist.exchanges))
+	
+	
 
+
+	
 
